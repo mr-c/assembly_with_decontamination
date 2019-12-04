@@ -1,0 +1,8 @@
+memory: 6
+threads: 4
+forward_reads:
+    class: File
+    path: /home/mbc/projects/assembly-pipeline/cwl/tools/data-example/SRR8822471_1.fastq.gz
+reverse_reads:
+    class: File
+    path: /home/mbc/projects/assembly-pipeline/cwl/tools/data-example/SRR8822471_2.fastq.gz

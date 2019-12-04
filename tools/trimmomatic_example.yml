@@ -1,0 +1,12 @@
+reads1:
+    class: File
+    path: /home/mbc/projects/assembly-pipeline/cwl/tools/data-example/SRR8822471_1.fastq.gz
+reads2:
+    class: File
+    path: /home/mbc/projects/assembly-pipeline/cwl/tools/data-example/SRR8822471_2.fastq.gz
+end_mode: PE
+phred: '33'
+leading: 3
+trailing: 3
+minlen: 100
+slidingwindow: '4:15'

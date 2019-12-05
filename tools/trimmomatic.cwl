@@ -133,19 +133,19 @@ inputs:
       performed. Steps performed after CROP might of course further shorten the
       read. The value is the number of bases to keep, from the start of the read.
 
-  reads1:
+  forward_reads:
     type: File
     inputBinding:
       position: 2
-    label: "FASTQ read file 1"
+    label: "FASTQ read file forward"
     doc: >
       FASTQ file of reads (R1 reads in Paired End mode)
   
-  reads2:
+  reverse_reads:
     type: File
     inputBinding:
       position: 3
-    label: "FASTQ read file 2"
+    label: "FASTQ read file reverse"
     doc: >
       FASTQ file of R2 reads in Paired End mode
 
@@ -209,6 +209,7 @@ inputs:
     type: string?
     inputBinding:
       prefix: "-summary"
+      value: ""
       position: 8
     label: "stats summary file"
     doc: >
@@ -221,13 +222,13 @@ outputs:
     outputBinding:
       glob: $(inputs.reads1.nameroot).trimmed
 
-  reads1_trimmed_paired:
+  forward_reads_trimmed_paired:
     type: File
     format: edam:format_1930  # fastq
     outputBinding:
       glob: $(inputs.reads1.nameroot).trimmed.paired.fastq.gz
 
-  reads2_trimmed_paired:
+  reverse_reads_trimmed_paired:
     type: File
     format: edam:format_1930  # fastq
     outputBinding:
@@ -236,7 +237,7 @@ outputs:
   summary:
     type: File?
     outputBinding:
-      glob: $(inputs.summary)
+      glob: "trimmomatic.log"
 
 stderr: stderr.txt
 stdout: stdout.txt
@@ -253,6 +254,8 @@ arguments:
 - valueFrom: $(parseInt(runtime.cores))
   prefix: "-threads"
   position: 2
+- valueFrom: "trimmomatic.log"
+  prefix: "-summary"
 
 doc: >
   Trimmomatic is a fast, multithreaded command line tool that can be used to trim and crop

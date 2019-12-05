@@ -18,16 +18,25 @@ inputs:
     type: File
     inputBinding:
       prefix: "-2"
+  reference:
+    type: string
+    inputBinding:
+      prefix: "-r"
 
 outputs:
   forward_reads_decontaminated:
     type: File
     format: edam:format_1930
     outputBinding:
-      glob: $(inputs.reads1.nameroot).decontaminated.fastq.gz
+      glob: $(inputs.forward_reads.nameroot).decontaminated.fastq.gz
 
   reverse_reads_decontaminated:
     type: File
     format: edam:format_1930
     outputBinding:
-      glob: $(inputs.reads2.nameroot).decontaminated.fastq.gz
+      glob: $(inputs.reverse_reads.nameroot).decontaminated.fastq.gz
+  
+  summary:
+    type: File
+    outputBinding:
+      glob: "log.txt"

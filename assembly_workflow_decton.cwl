@@ -52,8 +52,8 @@ steps:
       metaSpades will be run in assembly mode (no error correction).
     run: tools/metaspades.cwl
     in:
-      forward_reads: trimmomatic/forward_reads_trimmed_paired
-      reverse_reads: trimmomatic/reads2_trimmed_paired
+      forward_reads: reads_host_decontamination/forward_reads_trimmed_paired
+      reverse_reads: reads_host_decontamination/reverse_reads_trimmed_paired
     out:
       - assembly_dir
       - contigs
@@ -81,3 +81,4 @@ outputs:
   contigs_host_decont:
     type: File
     outputSource: contigs_host_decontamination/contigs_decontaminated
+

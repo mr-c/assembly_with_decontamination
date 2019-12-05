@@ -4,10 +4,6 @@ cwlVersion: v1.0
 class: CommandLineTool
 
 requirements:
-#  ResourceRequirement:
-#    ramMin: 8192
-#    ramMax: 16384
-#    coresMin: $(inputs.threads)
   InlineJavascriptRequirement: {}
   ShellCommandRequirement: {}
 
@@ -20,7 +16,7 @@ inputs:
       prefix: -phred
       separate: false
       position: 4
-    label: 'quality score format'
+    label: "quality score format"
     doc: >
       Either PHRED "33" or "64" specifies the base quality encoding. Default: 64
 
@@ -30,7 +26,7 @@ inputs:
       position: 12
       prefix: TOPHRED64
       separate: false
-    label: 'quality score conversion to phred64'
+    label: "quality score conversion to phred64"
     doc: >
       This (re)encodes the quality part of the FASTQ file to base 64.
 
@@ -38,9 +34,9 @@ inputs:
     type: int?
     inputBinding:
       position: 13
-      prefix: 'HEADCROP:'
+      prefix: "HEADCROP:"
       separate: false
-    label: 'read head trimming'
+    label: "read head trimming"
     doc: >
       Removes the specified number of bases, regardless of quality, from the
       beginning of the read.
@@ -51,9 +47,9 @@ inputs:
     type: boolean?
     inputBinding:
       position: 12
-      prefix: TOPHRED33
+      prefix: "TOPHRED33"
       separate: false
-    label: 'quality score conversion to phred33'
+    label: "quality score conversion to phred33"
     doc: >
       This (re)encodes the quality part of the FASTQ file to base 33.
 
@@ -61,9 +57,9 @@ inputs:
     type: int?
     inputBinding:
       position: 100
-      prefix: 'MINLEN:'
+      prefix: "MINLEN:"
       separate: false
-    label: 'minimum length read filter'
+    label: "minimum length read filter"
     doc: >
       This module removes reads that fall below the specified minimal length.
       If required, it should normally be after all other processing steps.
@@ -79,21 +75,13 @@ inputs:
       JVM arguments should be a quoted, space separated list
       (e.g. "-Xms128m -Xmx512m")
   
-  threads:
-    type: int?
-    inputBinding:
-      prefix: '-threads'
-      valueFrom: $(runtime.cores)
-    doc: >
-      Number of threads, default to runtime.cores
-
   leading:
     type: int?
     inputBinding:
       position: 14
-      prefix: 'LEADING:'
+      prefix: "LEADING:"
       separate: false
-    label: 'read tail trimming'
+    label: "read tail trimming"
     doc: >
       Remove low quality bases from the beginning. As long as a base has a
       value below this threshold the base is removed and the next base will be
@@ -103,9 +91,9 @@ inputs:
     type: string?
     inputBinding:
       position: 15
-      prefix: 'SLIDINGWINDOW:'
+      prefix: "SLIDINGWINDOW:"
       separate: false
-    label: 'read filtering sliding window'
+    label: "read filtering sliding window"
     doc: >
       Perform a sliding window trimming, cutting once the average quality
       within the window falls below a threshold. By considering multiple
@@ -128,7 +116,7 @@ inputs:
            }
          }
       position: 11
-    label: 'sequencing adaptater removing'
+    label: "sequencing adaptater removing"
     doc: >
       Cut adapter and other illumina-specific sequences from the read.
 
@@ -136,9 +124,9 @@ inputs:
     type: int?
     inputBinding:
       position: 13
-      prefix: 'CROP:'
+      prefix: "CROP:"
       separate: false
-    label: 'read cropping'
+    label: "read cropping"
     doc: >
       Removes bases regardless of quality from the end of the read, so that the
       read has maximally the specified length after this step has been
@@ -149,7 +137,7 @@ inputs:
     type: File
     inputBinding:
       position: 2
-    label: 'FASTQ read file 1'
+    label: "FASTQ read file 1"
     doc: >
       FASTQ file of reads (R1 reads in Paired End mode)
   
@@ -157,7 +145,7 @@ inputs:
     type: File
     inputBinding:
       position: 3
-    label: 'FASTQ read file 2'
+    label: "FASTQ read file 2"
     doc: >
       FASTQ file of R2 reads in Paired End mode
 
@@ -165,9 +153,9 @@ inputs:
     type: int?
     inputBinding:
       position: 101
-      prefix: 'AVGQUAL:'
+      prefix: "AVGQUAL:"
       separate: false
-    label: 'minimum average quality required'
+    label: "minimum average quality required"
     doc: >
       Drop the read if the average quality is below the specified level
 
@@ -175,9 +163,9 @@ inputs:
     type: int?
     inputBinding:
       position: 14
-      prefix: 'TRAILING:'
+      prefix: "TRAILING:"
       separate: false
-    label: 'read tail quality filtering'
+    label: "read tail quality filtering"
     doc: >
       Remove low quality bases from the end. As long as a base has a value
       below this threshold the base is removed and the next base (which as
@@ -198,7 +186,7 @@ inputs:
              return self;
            }
          }
-    label: 'maxinfo: read score quality filtering'
+    label: "maxinfo: read score quality filtering"
     doc: >
       Performs an adaptive quality trim, balancing the benefits of retaining
       longer reads against the costs of retaining bases with errors.
@@ -213,16 +201,16 @@ inputs:
     type: string
     inputBinding:
       position: 1
-    label: 'read -end mode format'
+    label: "read -end mode format"
     doc: >
       Single End (SE) or Paired End (PE) mode
   
   summary:
     type: string?
     inputBinding:
-      prefix: '-summary'
+      prefix: "-summary"
       position: 8
-    label: 'stats summary file'
+    label: "stats summary file"
     doc: >
       Stats Summary File
 
@@ -262,6 +250,9 @@ arguments:
   position: 6
 - valueFrom: $(inputs.reads2.nameroot).trimmed.unpaired.fastq.gz
   position: 7
+- valueFrom: $(parseInt(runtime.cores))
+  prefix: "-threads"
+  position: 2
 
 doc: >
   Trimmomatic is a fast, multithreaded command line tool that can be used to trim and crop

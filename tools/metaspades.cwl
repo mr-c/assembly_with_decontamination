@@ -4,21 +4,17 @@ class: CommandLineTool
 
 label: "metaSPAdes: de novo metagenomics assembler"
 
-baseCommand: [ spades.py, "--only-assembler", "--meta" ]
+baseCommand: [ spades.py ]
 
 requirements:
   InlineJavascriptRequirement: {}
 
-hints:
+#hints:
   #SoftwareRequirement:
     #packages:
       #spades:
         #specs: [ "https://identifiers.org/rrid/RRID:SCR_000131" ]
         #version: [ "20610fec3ecc8c3218" ]
-  ResourceRequirement:
-    coresMin: $(inputs.threads)
-    ramMin: $(inputs.memory * 1024)
-
 
 inputs:
   forward_reads:
@@ -29,20 +25,6 @@ inputs:
     type: File?
     inputBinding:
       prefix: "-2"
-  memory:
-    type: int
-    default: 250
-    doc: |
-      Max memory for metaspades in Gb.
-    inputBinding:
-      prefix: "--memory"
-  threads:
-    type: int
-    default: 16
-    doc: |
-      Number of threads.
-    inputBinding:
-      prefix: "--threads"
   continue:
     type: boolean
     default: False
@@ -52,11 +34,14 @@ inputs:
     inputBinding:
       prefix: "--continue"
 
-arguments:
-  - valueFrom: $(runtime.outdir)
-    prefix: -o
-  - valueFrom: $(runtime.tmpdir)
-    prefix: --tmp-dir
+arguments: [
+  "-o", $(runtime.outdir),
+  "--tmp-dir", $(runtime.tmpdir),
+  "--threads", $(parseInt(runtime.cores)),
+  "--memory", $(runtime.ram),
+  "--only-assembler",
+  "--meta"
+]
 
 stdout: stdout.txt
 stderr: stderr.txt

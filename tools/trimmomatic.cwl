@@ -198,22 +198,13 @@ inputs:
       longer reads, while a high value (>0.8) favours read correctness.
 
   end_mode:
-    type: string
+    type: string?
     inputBinding:
       position: 1
     label: "read -end mode format"
     doc: >
       Single End (SE) or Paired End (PE) mode
-  
-  summary:
-    type: string?
-    inputBinding:
-      prefix: "-summary"
-      value: ""
-      position: 8
-    label: "stats summary file"
-    doc: >
-      Stats Summary File
+
 
 outputs:
   reads1_trimmed:

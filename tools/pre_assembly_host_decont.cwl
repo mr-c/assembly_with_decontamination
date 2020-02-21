@@ -19,7 +19,7 @@ inputs:
     inputBinding:
       prefix: "-2"
   reference:
-    type: string
+    type: File
     inputBinding:
       prefix: "-r"
 

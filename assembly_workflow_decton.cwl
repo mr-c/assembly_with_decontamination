@@ -10,11 +10,11 @@ requirements:
 inputs:
     forward_reads: File
     reverse_reads: File
-    reference: string
+    reference: File
 
 steps:
   # QC
-  trimmomatic:
+  trim:
     doc: |
       Low quality trimming (low quality ends and sequences with < quality scores
       less than 15 over a 4 nucleotide wide window are removed)
@@ -22,12 +22,12 @@ steps:
     in:
       forward_reads: forward_reads
       reverse_reads: reverse_reads
-      phred: { default: "33" }
-      leading: { default: 3 }
-      trailing: { default: 3 }
-      end_mode: { default: PE }
-      minlen: { default: 90 }
-      slidingwindow: { default: "4:15" }
+#      phred: { default: "33" }
+#      leading: { default: 3 }
+#      trailing: { default: 3 }
+#      end_mode: { default: PE }
+#      minlen: { default: 90 }
+#      slidingwindow: { default: "4:15" }
     out:
       - forward_reads_trimmed_paired
       - reverse_reads_trimmed_paired 
@@ -39,8 +39,8 @@ steps:
     run: tools/pre_assembly_host_decont.cwl
     in:
       reference: reference
-      forward_reads: trimmomatic/forward_reads_trimmed_paired
-      reverse_reads: trimmomatic/reverse_reads_trimmed_paired
+      forward_reads: trim/forward_reads_trimmed_paired
+      reverse_reads: trim/reverse_reads_trimmed_paired
     out:
       - forward_reads_decontaminated
       - reverse_reads_decontaminated
@@ -52,8 +52,8 @@ steps:
       metaSpades will be run in assembly mode (no error correction).
     run: tools/metaspades.cwl
     in:
-      forward_reads: reads_host_decontamination/forward_reads_trimmed_paired
-      reverse_reads: reads_host_decontamination/reverse_reads_trimmed_paired
+      forward_reads: reads_host_decontamination/forward_reads_decontaminated
+      reverse_reads: reads_host_decontamination/reverse_reads_decontaminated
     out:
       - assembly_dir
       - contigs
@@ -69,9 +69,9 @@ steps:
       - contigs_decontaminated  
 
 outputs:
-  trimmomatic_log:
+  trimm_log:
     type: File
-    outputSource: trimmomatic/summary
+    outputSource: trim/summary
   reads_decontamination_log:
     type: File
     outputSource: reads_host_decontamination/summary

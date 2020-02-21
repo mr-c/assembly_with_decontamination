@@ -73,7 +73,7 @@ steps:
       - contigs_decontaminated  
 
 outputs:
-  trimm_log:
+  trim_log:
     type: File
     outputSource: trim/summary
   reads_decontamination_log:
